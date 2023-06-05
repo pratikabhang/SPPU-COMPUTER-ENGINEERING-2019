@@ -1,0 +1,104 @@
+#include<iostream>
+#define SZ 10
+using namespace std;
+class Queue
+ {
+ int q[SZ],f,r;
+ public:
+ Queue()
+ {
+ f=0;r=-1;
+ }
+ void add();
+ void del();
+ void disp();
+ int qEmpty()
+ {
+ if(f==r+1)
+ return(1);
+ else
+ return(0); 
+ } 
+ int qFull()
+ {
+ if(r==SZ-1)
+ return(1);
+ else
+ return(0); 
+ } 
+ }Q;
+void Queue :: disp()
+ {
+ int i;
+ if(qEmpty()==1)
+ cout<<"\nQueue empty";
+ else
+ {
+ cout<<"\nJobs In Queue\nFront -> ";
+ for(i=f;i<=r;i++)
+ cout<<q[i]<<" ";
+ cout<<" <- Rear";
+ }
+ }
+void Queue :: add()
+ {
+ int cont;
+ do
+ {
+ if(qFull()==1)
+ {
+ cout<<"\nQueue is full";
+ break;
+ }
+ else
+ {
+ disp();
+ r++;
+ cout<<"\nEnter Job No : ";
+ cin>>q[r];
+ disp();
+ }
+ cout<<"\nContinue(1:yes)or(2:no) : ";
+ cin>>cont;
+ }while(cont==1);
+}
+void Queue :: del()
+ {
+ int cont;
+ do
+ {
+ if(qEmpty()==1)
+ {
+ cout<<"\n Queue is Empty";
+ break;
+ }
+ else
+ {
+ disp();
+ cout<<"\nJob "<<q[f]<<" Is Finished";
+ f++;
+ disp();
+ }
+ cout<<"\nContinue(1:yes)or(2:no) : ";
+ cin>>cont;
+ }while(cont==1);
+ }
+int main()
+ {
+ int ch;
+ Queue Q;
+ do
+ {
+ cout<<"\n\n\t\tJob Queue\n1.Add\n2.del\n3.disp\n4.Exit\n\n\t\tEnter choice: ";
+ cin>>ch;
+ switch(ch)
+ {
+ case 1:Q.add(); break;
+ case 2:Q.del(); break;
+ case 3:Q.disp(); break;
+ case 4:cout<<"\nExist!!!"; break;
+ default:
+ cout<<"\nwrong choice!!!";
+ }
+ }while(ch!=4);
+ }
