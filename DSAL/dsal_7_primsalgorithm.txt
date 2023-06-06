@@ -1,0 +1,109 @@
+#include<iostream>
+using namespace std;
+int visited[10];
+int a[10][10];
+int weight;
+void create_graph(int n){
+for(int j=0 ; j<n ; j++){
+for(int k=0 ; k<n ; k++){
+a[j][k] = -1;
+}
+}
+cout << "\nAssigning distance between nodes - ";
+for(int l=0 ; l<n ; l++){
+for(int m=0 ; m<n ; m++){
+if(a[l][m] == -1 && l != m){
+cout << "\nEnter distance from "<< l << " to " << m << " : ";
+cin >> weight;
+a[l][m] = a[m][l] = weight;
+}
+}
+}
+}
+void display(int n){
+cout << "Printing Graph - " << endl << endl;
+for(int i=0 ; i<n ; i++){
+cout << i << " ";
+for(int j = 0 ; j<n ; j++){
+cout << a[i][j] << " ";
+}
+cout << endl;
+}
+}
+void prims(int n){
+int vis[n]={0};
+int row, col, total_weight;
+total_weight = 0;
+int no_edges = 0;
+vis[0]=1;
+while(no_edges != n-1){
+int min = 999;
+for(int i=0 ; i<n ; i++){
+if(vis[i]==1){
+for(int j=0 ; j<n ; j++){
+if(vis[j]==0 && a[i][j]!=-1){
+if(min > a[i][j]){
+min = a[i][j];
+row = i;
+col = j;
+}
+}
+}
+}
+}
+vis[col] = 1;
+total_weight += min;
+a[row][col]=a[col][row] = -1;
+no_edges++;
+cout <<"\nNodes selected "<<row<<" and "<<col<<"\nWeight between "<<row<<" and "<<col<<" is = "<<min<<endl;
+}
+cout<<"\nTotal weight = "<<total_weight<<endl;
+}
+void isconnected(int n){
+for(int i= 0 ; i<n ; i++){
+if(visited[i] == -1){
+cout<<"Not Connected"<<endl;
+break;
+}
+}
+cout<<"Connected"<<endl;
+}
+int main(){
+int n, ch;
+cout << "Enter number of nodes - ";
+cin >> n;
+while(true){
+cout<<"Enter 1 for Creating the graph: "<<endl;
+cout<<"Enter 2 for Display the graph: "<<endl;
+cout<<"Enter 3 for Checking Connected or Not: "<<endl;
+cout<<"Enter 4 for Prims's Algorithm: "<<endl;
+cout<<"Enter 5 for Exiting: "<<endl;
+cout<<"Enter your Choice: ";
+cin>>ch;
+if(ch==1){
+cout<<endl;
+create_graph(n);
+cout<<endl;
+}
+else if(ch==2){
+cout<<endl;
+display(n);
+cout<<endl;
+}
+else if(ch==3){
+cout<<endl;
+isconnected(n);
+cout<<endl;
+}
+else if(ch==4){
+cout<<endl;
+prims(n);
+cout<<endl;
+}
+else{
+cout<<"Exiting..."<<endl;
+break;
+}
+}
+return 0;
+}

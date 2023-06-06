@@ -1,0 +1,133 @@
+#include <iostream> 
+#include <cstring> 
+#include <stack> 
+using namespace std;
+struct node 
+{ 
+char data;
+node* left = NULL;
+node* right = NULL;
+};
+class Exp_tree 
+{ 
+public: 
+node* create_node(char ch);
+bool isoperator(char ch);
+node* const_tree(string);
+void inorder(node*);
+void postorder(node*);
+void delete_tree(node*);
+};
+int main() 
+{ 
+Exp_tree obj;
+string str;
+cout << "Enter String : ";
+cin >> str;
+node *tree;
+tree = obj.const_tree(str);
+ cout << "In-order Traversal : ";
+obj.inorder(tree);
+ cout << "\n";
+ cout << "Post-order Traversal : ";
+obj.postorder(tree);
+ cout << "\n";
+obj.delete_tree(tree);
+return 0;
+} 
+node* Exp_tree :: create_node(char ch) { 
+node *temp = new node;
+ temp->data = ch;
+return temp;
+} 
+bool Exp_tree :: isoperator(char ch) 
+{ 
+ if(ch == '+' || ch == '-' || ch == '*' || ch == '/') { 
+return true;
+ } 
+return false;
+} 
+node* Exp_tree :: const_tree(string exp) { 
+stack <node*> st;
+node *t,*t1,*t2;
+ for (int i = (exp.length()-1);i>=0;i--) { 
+t = create_node(exp[i]);
+ if(!isoperator(exp[i])) 
+ { 
+st.push(t);
+ } 
+ else 
+ { 
+t1 = st.top();
+st.pop();
+t2 = st.top();
+st.pop();
+ t->left = t1;
+ t->right = t2;
+st.push(t);
+ } 
+ } 
+t = st.top();
+return t;
+} 
+void Exp_tree :: inorder(node* t) { 
+ if (t == NULL) 
+ { 
+return;
+ } 
+ if (!isoperator(t->data)) 
+ { 
+ cout << t->data;
+ } 
+ else 
+ { 
+cout << "(";
+ inorder(t->left);
+ cout << t->data;
+ inorder(t->right);
+cout << ")";
+ } 
+} 
+void Exp_tree :: postorder(node* t) 
+{ 
+stack <node*> s1;
+stack <node*> s2;
+node *ele,*ele2;
+ if (t==NULL) 
+ { 
+return;
+ } 
+ else 
+ { 
+s1.push(t);
+ while(!s1.empty()) 
+ { 
+ele = s1.top();
+s2.push(ele);
+s1.pop();
+ if(ele->left != NULL) 
+ { 
+ s1.push(ele->left);
+ } 
+ if(ele->right != NULL) 
+ { 
+ s1.push(ele->right);
+ } 
+ } 
+ while(!s2.empty()) 
+ { 
+ele2 = s2.top();
+ cout << ele2->data;
+s2.pop();
+ } 
+ } 
+} 
+void Exp_tree :: delete_tree(node* t){ 
+ if(t == NULL) 
+return ;
+ else{ 
+ delete_tree(t -> left);
+ delete_tree(t -> right);
+ cout << "Deleted node : " << t->data << endl;
+ } 
+}
