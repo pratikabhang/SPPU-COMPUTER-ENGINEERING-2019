@@ -1,0 +1,28 @@
+#include<graphics.h>
+int main()
+{
+	initwindow(800,500,"RAINBOW",150,50);
+	for(int i=1;i<180;i++)
+	{
+		for(int j=1;j<=48;j++)
+		{
+		setcolor(LIGHTMAGENTA);
+		arc(400,450,0,1+i,50+j);
+		setcolor(LIGHTCYAN);
+		arc(400,450,0,1+i,100+j);
+		setcolor(LIGHTGRAY);
+		arc(400,450,0,1+i,150+j);
+		setcolor(LIGHTGREEN);
+		arc(400,450,0,1+i,200+j);
+		setcolor(LIGHTBLUE);
+		arc(400,450,0,1+i,250+j);
+		setcolor(YELLOW);
+		arc(400,450,0,1+i,300+j);
+		setcolor(LIGHTRED);
+		arc(400,450,0,1+i,350+j);
+    	}
+		delay(10);
+	}
+	getch();
+	closegraph();
+}
