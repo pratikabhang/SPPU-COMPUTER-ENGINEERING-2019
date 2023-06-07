@@ -1,0 +1,142 @@
+class Set:
+    def __init__(self):
+        self.items = []
+
+    def add(self, element):
+        if element not in self.items:
+            self.items.append(element)
+            print(f"Added {element} to the set.")
+        else:
+            print(f"{element} is already in the set.")
+
+    def remove(self, element):
+        if element in self.items:
+            self.items.remove(element)
+            print(f"Removed {element} from the set.")
+        else:
+            print(f"{element} is not present in the set.")
+
+    def contains(self, element):
+        return element in self.items
+
+    def size(self):
+        return len(self.items)
+
+    def iterator(self):
+        return iter(self.items)
+
+    def intersection(self, other_set):
+        result = Set()
+        for item in self.items:
+            if other_set.contains(item):
+                result.add(item)
+        return result
+
+    def union(self, other_set):
+        result = Set()
+        for item in self.items:
+            result.add(item)
+        for item in other_set.items:
+            result.add(item)
+        return result
+
+    def difference(self, other_set):
+        result = Set()
+        for item in self.items:
+            if not other_set.contains(item):
+                result.add(item)
+        return result
+
+    def subset(self, other_set):
+        for item in self.items:
+            if not other_set.contains(item):
+                return False
+        return True
+
+    def display_data(self):
+        print("Set:")
+        for item in self.items:
+            print(item)
+
+
+def display_menu():
+    print("Set Operations")
+    print("1. Add Element")
+    print("2. Remove Element")
+    print("3. Check if Element is Present")
+    print("4. Get Size of Set")
+    print("5. Perform Intersection")
+    print("6. Perform Union")
+    print("7. Perform Difference")
+    print("8. Check Subset")
+    print("9. Display Set")
+    print("10. Exit")
+
+
+def main():
+    my_set = Set()
+    while True:
+        display_menu()
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            element = input("Enter the element to add: ")
+            my_set.add(element)
+        elif choice == "2":
+            element = input("Enter the element to remove: ")
+            my_set.remove(element)
+        elif choice == "3":
+            element = input("Enter the element to check: ")
+            if my_set.contains(element):
+                print(f"{element} is present in the set.")
+            else:
+                print(f"{element} is not present in the set.")
+        elif choice == "4":
+            print(f"Size of the set: {my_set.size()}")
+        elif choice == "5":
+            other_set = Set()
+            element = input("Enter an element for the other set: ")
+            while element != "":
+                other_set.add(element)
+                element = input("Enter an element for the other set (press Enter to finish): ")
+            intersection = my_set.intersection(other_set)
+            print("Intersection:")
+            intersection.display_data()
+        elif choice == "6":
+            other_set = Set()
+            element = input("Enter an element for the other set: ")
+            while element != "":
+                other_set.add(element)
+                element = input("Enter an element for the other set (press Enter to finish): ")
+            union = my_set.union(other_set)
+            print("Union:")
+            union.display_data()
+        elif choice == "7":
+            other_set = Set()
+            element = input("Enter an element for the other set: ")
+            while element != "":
+                other_set.add(element)
+                element = input("Enter an element for the other set (press Enter to finish): ")
+            difference = my_set.difference(other_set)
+            print("Difference:")
+            difference.display_data()
+        elif choice == "8":
+            other_set = Set()
+            element = input("Enter an element for the other set: ")
+            while element != "":
+                other_set.add(element)
+                element = input("Enter an element for the other set (press Enter to finish): ")
+            if my_set.subset(other_set):
+                print("The set is a subset of the other set.")
+            else:
+                print("The set is not a subset of the other set.")
+        elif choice == "9":
+            my_set.display_data()
+        elif choice == "10":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,160 @@
+#include <iostream>
+using namespace std;
+struct Node {
+    string keyword;
+    string meaning;
+    int height;
+    Node* left;
+    Node* right;
+
+    Node(string key, string value) {
+        keyword = key;
+        meaning = value;
+        height = 1;
+        left = NULL;
+        right = NULL;
+    }
+};
+int getHeight(Node* node) {
+    if (node == NULL)
+        return 0;
+    return node->height;
+}
+void updateHeight(Node* node) {
+    node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
+}
+int getBalanceFactor(Node* node) {
+    if (node == NULL)
+        return 0;
+    return getHeight(node->left) - getHeight(node->right);
+}
+Node* rightRotate(Node* node) {
+    Node* newRoot = node->left;
+    node->left = newRoot->right;
+    newRoot->right = node;
+    updateHeight(node);
+    updateHeight(newRoot);
+    return newRoot;
+}
+Node* leftRotate(Node* node) {
+    Node* newRoot = node->right;
+    node->right = newRoot->left;
+    newRoot->left = node;
+    updateHeight(node);
+    updateHeight(newRoot);
+    return newRoot;
+}
+Node* balance(Node* node) {
+    updateHeight(node);
+    int balanceFactor = getBalanceFactor(node);
+
+    if (balanceFactor > 1) {
+        if (getBalanceFactor(node->left) < 0)
+            node->left = leftRotate(node->left);
+        return rightRotate(node);
+    }
+    if (balanceFactor < -1) {
+        if (getBalanceFactor(node->right) > 0)
+            node->right = rightRotate(node->right);
+        return leftRotate(node);
+    }
+    return node;
+}
+Node* insert(Node* node, string keyword, string meaning) {
+    if (node == NULL)
+        return new Node(keyword, meaning);
+    if (keyword < node->keyword)
+        node->left = insert(node->left, keyword, meaning);
+    else if (keyword > node->keyword)
+        node->right = insert(node->right, keyword, meaning);
+    else {
+        node->meaning = meaning;
+        return node;
+    }
+    return balance(node);
+}
+Node* find(Node* node, string keyword) {
+    if (node == NULL || node->keyword == keyword)
+        return node;
+    if (keyword < node->keyword)
+        return find(node->left, keyword);
+    else
+        return find(node->right, keyword);
+}
+void displayAscending(Node* node) {
+    if (node != NULL) {
+        displayAscending(node->left);
+        cout << node->keyword << ": " << node->meaning << endl;
+        displayAscending(node->right);
+    }
+}
+void displayDescending(Node* node) {
+    if (node != NULL) {
+        displayDescending(node->right);
+        cout << node->keyword << ": " << node->meaning << endl;
+        displayDescending(node->left);
+    }
+}
+int countComparisons(Node* node, string keyword, int count) {
+    if (node == NULL || node->keyword == keyword)
+        return count;
+
+    if (keyword < node->keyword)
+        return countComparisons(node->left, keyword, count + 1);
+    else
+        return countComparisons(node->right, keyword, count + 1);
+}
+int main() {
+    Node* root = NULL;
+    int choice;
+    string keyword, meaning;
+    while (true) {
+        cout << "1. Add a keyword\n";
+        cout << "2. Update the meaning of a keyword\n";
+        cout << "3. Display data in ascending order\n";
+        cout << "4. Display data in descending order\n";
+        cout << "5. Find the maximum number of comparisons\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                cout << "Enter the keyword: ";
+                cin >> keyword;
+                cout << "Enter the meaning: ";
+                cin.ignore();
+                getline(cin, meaning);
+                root = insert(root, keyword, meaning);
+                cout << "Keyword added successfully!\n";
+                break;
+            case 2:
+                cout << "Enter the keyword to update: ";
+                cin >> keyword;
+                cout << "Enter the new meaning: ";
+                cin.ignore();
+                getline(cin, meaning);
+                root = insert(root, keyword, meaning);
+                cout << "Keyword updated successfully!\n";
+                break;
+            case 3:
+                cout << "Dictionary data in ascending order:\n";
+                displayAscending(root);
+                break;
+            case 4:
+                cout << "Dictionary data in descending order:\n";
+                displayDescending(root);
+                break;
+            case 5:
+                cout << "Enter the keyword to find: ";
+                cin >> keyword;
+                cout << "Maximum comparisons required: " << countComparisons(root, keyword, 0) << endl;
+                break;
+            case 6:
+                cout << "Exiting program...\n";
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+        cout << endl;
+    }
+}

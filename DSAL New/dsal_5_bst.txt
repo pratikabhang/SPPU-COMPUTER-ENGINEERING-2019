@@ -1,0 +1,111 @@
+#include <iostream>
+using namespace std;
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+};e
+Node* createNode(int value) {
+    Node* newNode = new Node();
+    if (!newNode) {
+        cout << "Memory error\n";
+        return NULL;
+    }
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+Node* insertNode(Node* root, int value) {
+    if (root == NULL) {
+        return createNode(value);
+    }
+    if (value < root->data) {
+        root->left = insertNode(root->left, value);
+    } else if (value > root->data) {
+        root->right = insertNode(root->right, value);
+    }
+    return root;
+}
+int findMinimum(Node* root) {
+    if (root == NULL) {
+        cout << "Tree is empty.\n";
+        return -1;
+    }
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    return root->data;
+}
+Node* swapPointers(Node* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    Node* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+
+    root->left = swapPointers(root->left);
+    root->right = swapPointers(root->right);
+
+    return root;
+}
+void displayData(Node* root) {
+    if (root == NULL)
+        return;
+    displayData(root->left);
+    cout << root->data << " ";
+    displayData(root->right);
+}
+void displayMenu() {
+    cout << "\nMenu:\n";
+    cout << "1. Insert a new node\n";
+    cout << "2. Find the minimum data value in the tree\n";
+    cout << "3. Swap the roles of left and right pointers\n";
+    cout << "4. Display the data\n";
+    cout << "5. Exit\n";
+    cout << "Enter your choice: ";
+}
+int main() {
+    Node* root = NULL;
+    int values[] = {};
+    int numValues = sizeof(values) / sizeof(values[0]);
+    for (int i = 0; i < numValues; i++) {
+        root = insertNode(root, values[i]);
+    }
+    int choice;
+    while (true) {
+        displayMenu();
+        cin >> choice;
+        switch (choice) {
+        case 1: {
+            int value;
+            cout << "Enter a value to insert: ";
+            cin >> value;
+            root = insertNode(root, value);
+            cout << "Node inserted successfully.\n";
+            break;
+        }
+        case 2: {
+            int minimum = findMinimum(root);
+            if (minimum != -1)
+                cout << "Minimum data value in the tree: " << minimum << endl;
+            break;
+        }
+        case 3:
+            root = swapPointers(root);
+            cout << "Roles of left and right pointers swapped at every node.\n";
+            break;
+        case 4:
+            cout << "Data of the tree: ";
+            displayData(root);
+            cout << endl;
+            break;
+        case 5:
+            cout << "Exiting the program.\n";
+            exit(0);
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+    return 0;
+}

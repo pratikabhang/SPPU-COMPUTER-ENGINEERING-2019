@@ -1,0 +1,120 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+struct Node {
+    char data;
+    Node* left;
+    Node* right;
+};
+Node* createNode(char value) {
+    Node* newNode = new Node();
+    if (!newNode) {
+        cout << "Memory error\n";
+        return NULL;
+    }
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+bool isOperator(char c) {
+    if (c == '+' || c == '-' || c == '*' || c == '/')
+        return true;
+    return false;
+}
+Node* constructExpressionTree(string prefix) {
+    stack<Node*> st;
+    int length = prefix.length();
+    for (int i = length - 1; i >= 0; i--) {
+        char symbol = prefix[i];
+        if (isOperator(symbol)) {
+            Node* newNode = createNode(symbol);
+            newNode->left = st.top();
+            st.pop();
+            newNode->right = st.top();
+            st.pop();
+            st.push(newNode);
+        } else {
+            Node* newNode = createNode(symbol);
+            st.push(newNode);
+        }
+    }
+    return st.top();
+}
+void postOrderTraversal(Node* root) {
+    if (root == NULL)
+        return;
+    stack<Node*> st1, st2;
+    st1.push(root);
+    while (!st1.empty()) {
+        Node* current = st1.top();
+        st1.pop();
+        st2.push(current);
+
+        if (current->left)
+            st1.push(current->left);
+        if (current->right)
+            st1.push(current->right);
+    }
+    while (!st2.empty()) {
+        Node* current = st2.top();
+        st2.pop();
+        cout << current->data << " ";
+        delete current;
+    }
+}
+void deleteTree(Node* root) {
+    if (root == NULL)
+        return;
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+}
+void displayMenu() {
+    cout << "\nMenu:\n";
+    cout << "1. Construct an expression tree\n";
+    cout << "2. Perform post-order traversal\n";
+    cout << "3. Delete the entire tree\n";
+    cout << "4. Exit\n";
+    cout << "Enter your choice: ";
+}
+int main() {
+    Node* root = NULL;
+    string prefix;
+    int choice;
+    while (true) {
+        displayMenu();
+        cin >> choice;
+        switch (choice) {
+        case 1:
+            cout << "Enter the prefix expression: ";
+            cin >> prefix;
+            root = constructExpressionTree(prefix);
+            cout << "Expression tree constructed successfully.\n";
+            break;
+        case 2:
+            if (root == NULL) {
+                cout << "Expression tree is empty. Please construct the tree first.\n";
+            } else {
+                cout << "Post-order traversal: ";
+                postOrderTraversal(root);
+                cout << endl;
+            }
+            break;
+        case 3:
+            if (root == NULL) {
+                cout << "Expression tree is empty. Please construct the tree first.\n";
+            } else {
+                deleteTree(root);
+                root = NULL;
+                cout << "Expression tree deleted successfully.\n";
+            }
+            break;
+        case 4:
+            cout << "Exiting the program.\n";
+            exit(0);
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+    return 0;
+}
