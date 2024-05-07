@@ -1,0 +1,51 @@
+a=[]
+n=int(input("Enter number of Students : "))
+print("Enter -1 for absent Students")
+for i in range(0,n):
+    marks=int(input("Enter the Marks : "))
+    a.append(marks)
+def average(list):
+    sum=0
+    absent=0
+    for x in list:
+        if(x!=-1):
+            sum=sum+x
+        else:
+            absent=absent+1
+    avg=sum/(n-absent)
+    print("\naverage is",avg)
+def absent(list):
+    absent=0
+    for x in list:
+        if x==-1:
+            absent=absent+1
+    print("\nAbsent students count are : ",absent)
+def minimum(list):
+    min=list[0]
+    for i in range(0,n):
+        min=list[i]
+        if(min!=-1):
+                break
+        for x in list:
+             if(x!=-1 and x<min):
+                min=x
+        print("\nMinimum marks are :",min)        
+def freq(list):
+    count=0
+    largest=max
+    for x in list:
+        if(x==largest):
+            count=count+1
+    print("\ntotal students with max marks :",count)        
+def maximum(list):
+    max=list[0]
+    for x in list:
+        if(x>max):
+            max=x
+    print("\nmaximum marks are : ",max)        
+
+average(a)    
+absent(a)
+minimum(a)
+freq(a)
+maximum(a)

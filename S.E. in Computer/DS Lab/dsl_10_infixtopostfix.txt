@@ -1,0 +1,109 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#define sz 40
+using namespace std;
+class Stack
+{
+ char exp[80],pexp[80],st[30];
+ int top;
+ public:
+ Stack()
+ {
+top=-1;
+ }
+ void inToPost();
+ int prio(char);
+ int isOp(char);
+ void push(char ch)
+ {
+top++;
+st[top]=ch;
+ }
+ char pop()
+ {
+char ch;
+ch=st[top];
+top--;
+return(ch);
+ }
+ };
+int Stack :: isOp(char ch)
+ {
+ if(ch=='+'||ch=='*'||ch=='/'||ch=='^'||ch=='$')
+ return(1);
+ else
+ return(0);
+ }
+int Stack :: prio(char ch)
+ {
+ switch(ch)
+ {
+case '^':
+case '$':
+ return(3);
+case '*':
+case '/':
+ return(2);
+case '+':
+case '-':
+ return(1);
+default:
+ return(0);
+ }
+ }
+void Stack :: inToPost()
+ {
+ char ch;
+ int i,j;
+ cout<<"\nEnter Infix Exp (eg. (a+b)-(c*d) ) : ";
+ cin>>exp;
+ top=-1;
+ for(i=j=0; exp[i]!='\0';i++)
+ {
+ch=exp[i];
+if(ch=='(')
+ push(ch);
+else
+ {
+ if(isOp(ch)==1)
+ {
+while(top!=-1 && prio(st[top])>=prio(ch))
+ {
+ ch=pop();
+ pexp[j]=ch;j++;
+ }
+push(ch);
+ }
+ else
+ {
+if(ch==')')
+ {
+ while(top!=-1 && st[top]!='(')
+ {
+ch=pop();
+pexp[j]=ch;j++;
+ }
+ top--;
+ }
+else
+ {
+ pexp[j]=ch;j++;
+ }
+ }
+ }
+ }
+ while(top!=-1)
+ {
+ch=pop();
+pexp[j]=ch;j++;
+ }
+ pexp[j]='\0';
+ cout<<"\nPostfix Eq : "<<pexp;
+}
+int main()
+ {
+ Stack S;
+ S.inToPost();
+ return 0;
+}
