@@ -1,0 +1,66 @@
+list=[]
+str1=input("Enter the string : ")
+list1=str1.split()
+def longest_word(list):
+    max1=len(list[0])
+    temp=list[0]
+    for word in list :
+        if (len(word)>max1):
+            max1=(len(word))
+            temp=word
+    return ("largest word is : ",temp,"and its length is : ",max1)
+def occurence_word(str):
+    count = 0
+    ch=input("Enter character to be searched : ")
+    for i in range(len(str)):
+        if(ch==str[i]):
+            count=count+1
+    return ("occurence of ",ch," is: ",count)
+def pen(str):
+    str1=input("enter String : ")
+    if(str1==str1[::-1]):
+        print("String is palindrome")
+ 
+    else:
+        print("String is not palindrome")
+ 
+
+def find(): 
+    substr = str(input("Enter substring : "))
+    for i in range(len(str1)-len(substr)+1):
+        if(str1[i:i+len(substr)]==substr):
+            return i
+def frequency(list):
+    count = 1
+    for i in range(len(list)):
+        for j in range(i+1,len(list)):
+            if(list[i]==list[j]):
+                count = count+1
+                list[j]="0"
+        if(count >=1 and list[i]!="0"):
+                print(list[i],"is",count,"times")
+                count=1
+a=True
+while(a==True):
+    print("***********MENU***********")
+    print("Enter 1 for word with longest length")
+    print("Enter 2 for finding occurence of particular character")
+    print("Enter 3 for checking palindrome")
+    print("Enter 4 for Index of 1st apperance of substring")
+    print("Enter 5 for frequency of each word")
+    print("Enter 6 for Exit")
+
+    choice=int(input("Enter your choice : "))
+    if(choice==1):     
+        print(longest_word(list1))
+    elif(choice==2):
+        print(occurence_word(str1))
+    elif(choice == 3):
+        print(pen(str1))
+    elif(choice == 4):
+        print("Given Substring is present at index : ",find())
+    elif(choice == 5):
+        print(frequency(list1))
+    elif(choice==6):
+        print("Exiting---")
+        a=False

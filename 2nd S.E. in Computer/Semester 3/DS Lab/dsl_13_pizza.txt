@@ -1,0 +1,150 @@
+#include <iostream>
+using namespace std;
+#define size 10
+class pizza
+{
+int porder[size];
+int front,rear;
+public:
+pizza()
+{
+front=rear=-1;
+}
+int qfull()
+{
+if((front==0)&&(rear==(size-1))||(front==(rear+1)%size))
+return 1;
+else
+return 0;
+}
+int qempty()
+{
+if(front==-1)
+return 1;
+else
+return 0;
+}
+int accept_order(int);
+void make_payment(int);
+void order_in_queue();
+};
+int pizza::accept_order(int item)
+{
+int n;
+int k;
+int price;
+if(qfull())
+cout<<"\nNo more orders...\n";
+else
+{
+if(front==-1)
+{
+front=rear=0;
+}
+else
+{
+rear=(rear+1)%size;
+}
+porder[rear]=item;
+}
+cout<<"\nNo. of pizza's you want : ";
+cin>>n;
+k = item;
+if(k == 1)
+{
+    price = 129;
+}
+else if(k == 2)
+{
+    price =179;
+}
+else if(k == 3)
+{
+    price =199;
+}
+else
+{
+    price = 229;
+}
+n=n*price;
+return n;
+}
+void pizza::make_payment(int n)
+{
+int item;
+
+char ans;
+if(qempty())
+cout<<"\nSorry !!! order is not there...\n";
+else
+{
+cout<<"\nDeliverd orders as follows...\n";
+
+item=porder[front];
+if(front==rear)
+{
+front=rear=-1;
+}
+else
+{
+front=(front+1)%size;
+}
+cout<<"\t"<<item;
+
+}
+cout<<"\nTotal amount to pay : "<<n;
+cout<<"\nThank you visit again....\n";
+}
+void pizza::order_in_queue()
+{
+int temp;
+if(qempty())
+{
+cout<<"\nThere is no pending order...\n";
+}
+else
+{
+temp=front;
+cout<<"\nPending Order are : ";
+while(temp!=rear)
+{
+cout<<"\t"<<porder[temp];
+temp=(temp+1)%size;
+}
+cout<<"\t"<<porder[temp];
+}
+}
+int main()
+{
+pizza p1;
+int ch,k,n;
+do
+{
+cout<<"\n********** Welcome To Pizza Parlor **********\n";
+cout<<"1.Get Order\n";
+cout<<"2.Make_Payment\n";
+cout<<"3.Pending Orders\n";
+cout<<"Enter choice: ";
+cin>>ch;
+switch(ch)
+{
+case 1:
+cout<<"\n\tMENU\n";
+cout<<"1.Veg Panner Pizza    - Rs.129\n";
+cout<<"2.Chicken Pizza       - Rs.179\n";
+cout<<"3.Cheeze Burst Pizza  - Rs.199\n";
+cout<<"4.Veg Framhouse Pizza - Rs.229\n";
+cout<<"\nPlease enter menu no between(1-4): ";
+cin>>k;
+n=p1.accept_order(k);
+break;
+case 2:
+p1.make_payment(n);
+break;
+case 3:cout<<"\n Following orders are to be deliver : ";
+p1.order_in_queue();
+break;
+}
+}while(ch!=4);
+return 0;
+}
